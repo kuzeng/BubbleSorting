@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,11 +29,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bubblesorting.ui.theme.BubbleSortingTheme
+import kotlin.system.exitProcess
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +83,10 @@ fun TextFieldLayout(modifier: Modifier = Modifier) {
         mutableStateOf(listOf<String>())
     }
 
+    var isValid by remember {
+        mutableStateOf(true)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -93,7 +100,7 @@ fun TextFieldLayout(modifier: Modifier = Modifier) {
                 value = input,
                 placeholder = {
                     Text(
-                        text = "Enter numbers between 0 and 9",
+                        text = stringResource(R.string.inputPrompt),
                         fontSize = 12.sp
                     )
                 },
@@ -102,19 +109,54 @@ fun TextFieldLayout(modifier: Modifier = Modifier) {
                 },
                 modifier = modifier.weight(1f)
             )
+        }
 
-            Spacer(modifier = modifier.width(16.dp))
+        Spacer(modifier = modifier.height(16.dp))
 
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
             Button(onClick = {
-                if (input.isNotBlank()) {
+                isValid = InputUtil.validateNumberInput(input)
+                if (isValid) {
                     numbers += input
                     input = ""
                 }
             }) {
-                Text(text = stringResource(R.string.enter))
+                Text(text = stringResource(R.string.sort))
+            }
+
+            Spacer(modifier = modifier.width(16.dp))
+
+            Button(onClick = {
+                input = ""
+                numbers = listOf<String>()
+                isValid = true
+
+            }) {
+                Text(text = stringResource(R.string.reset))
+            }
+
+            Spacer(modifier = modifier.width(16.dp))
+
+            Button(onClick = {
+                exitProcess(-1)
+            }) {
+                Text(text = stringResource(R.string.quit))
             }
         }
-        
+
+        if (!isValid) {
+            Text(
+                text = stringResource(R.string.invalidInputMessage),
+                color = Color.Red,
+                modifier = Modifier
+                    .padding(16.dp)
+            )
+        }
+
         LazyColumn {
             items(numbers) {currentName ->
                 Text(
@@ -128,6 +170,7 @@ fun TextFieldLayout(modifier: Modifier = Modifier) {
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

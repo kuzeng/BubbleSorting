@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Bubble Sorting</string>
-    <string name="enter">Enter</string>
+    <string name="sort">Sort</string>
     <string name="title">Bubble Sorting</string>
+    <string name="invalidInputMessage">Please enter integers between 0 and 9 only. The maximum input size is 8, minimum input size is 3</string>
+    <string name="inputPrompt">Separate numbers by a single comma</string>
+    <string name="reset">Reset</string>
+    <string name="quit">Quit</string>
 </resources>
