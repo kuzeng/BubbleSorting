@@ -87,6 +87,10 @@ fun TextFieldLayout(modifier: Modifier = Modifier) {
         mutableStateOf(true)
     }
 
+    var steps by remember {
+        mutableStateOf(listOf<String>())
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -121,8 +125,13 @@ fun TextFieldLayout(modifier: Modifier = Modifier) {
             Button(onClick = {
                 isValid = InputUtil.validateNumberInput(input)
                 if (isValid) {
-                    numbers += input
+                    var strings = input.split(",")
+                    val numberArray = strings.map { it.toInt() }
+                    steps = BubbleSortUtil.buildBubbleSortStringArray(numberArray.toIntArray())
+
+                    numbers += steps
                     input = ""
+
                 }
             }) {
                 Text(text = stringResource(R.string.sort))
