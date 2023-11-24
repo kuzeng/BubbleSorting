@@ -166,20 +166,19 @@ fun TextFieldLayout(modifier: Modifier = Modifier) {
             )
         }
 
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.padding(16.dp)
+        ) {
             items(numbers) {currentName ->
                 Text(
                     text = currentName,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
                 )
-                Divider()
             }
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
